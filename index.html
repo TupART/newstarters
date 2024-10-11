@@ -1,0 +1,385 @@
+<html><head><base href="#">
+<title>Advanced IT File Analyzer</title><style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #0a0a1a;
+        color: #e0e0ff;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+    }
+    .container {
+        background: rgba(20, 20, 40, 0.8);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
+        max-width: 900px;
+        width: 100%;
+    }
+    h1, h2, h3 {
+        text-align: center;
+        color: #00ffff;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 2rem; }
+    h3 { font-size: 1.5rem; }
+    .upload-area {
+        border: 2px dashed #00ffff;
+        border-radius: 10px;
+        padding: 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        transition: all 0.3s ease;
+    }
+    .upload-area:hover {
+        background: rgba(0, 255, 255, 0.1);
+    }
+    #fileInput {
+        display: none;
+    }
+    label, button {
+        cursor: pointer;
+        background: #00ffff;
+        color: #0a0a1a;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        border: none;
+        font-size: 1rem;
+    }
+    label:hover, button:hover {
+        background: #00cccc;
+    }
+    #resultArea {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        padding: 1rem;
+        margin-top: 2rem;
+    }
+    .neon-line {
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #00ffff, transparent);
+        margin: 2rem 0;
+    }
+    @keyframes pulse {
+        0% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
+        50% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.8); }
+        100% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
+    }
+    .container {
+        animation: pulse 3s infinite;
+    }
+    #rowSelector {
+        background-color: #1a1a3a;
+        color: #00ffff;
+        border: 1px solid #00ffff;
+        padding: 0.5rem;
+        border-radius: 5px;
+        margin-bottom: 1rem;
+        width: 100%;
+    }
+    #analysisResult {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        padding: 1rem;
+        margin-top: 1rem;
+    }
+    .result-section {
+        margin-bottom: 1.5rem;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 1rem;
+        border-radius: 5px;
+    }
+    .result-section h4 {
+        color: #ff00ff;
+        margin-top: 0;
+    }
+    .result-content {
+        margin-bottom: 0.5rem;
+        word-wrap: break-word;
+    }
+    .copy-btn {
+        margin-top: 0.5rem;
+        transition: background-color 0.3s ease;
+    }
+    .mode-selector {
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    .mode-selector select {
+        background-color: #1a1a3a;
+        color: #00ffff;
+        border: 1px solid #00ffff;
+        padding: 0.5rem;
+        border-radius: 5px;
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <center><img src="https://i.imgur.com/yjdutYT.png" alt="CCH IT Department" width="200" height="200"></center>
+    <h1>CCH IT Spain Department Tool</h1>
+    <h2>Advanced New Starters File Analyzer</h2>
+    <div class="mode-selector">
+        <label for="modeSelect">Select Mode:</label>
+        <select id="modeSelect" onchange="changeMode()">
+            <option value="step2">Step 2 - TTG/B2E</option>
+            <option value="step3">Step 3 - Genesys</option>
+        </select>
+    </div>
+    <div class="upload-area">
+        <input type="file" id="fileInput" accept=".xlsx" />
+        <label for="fileInput">Upload Hiring and Credentials File</label>
+    </div>
+    <div class="neon-line"></div>
+    <div id="resultArea">
+        Results will appear here... 😈​😈​😈​
+    </div>
+</div>
+
+<script>
+document.getElementById('fileInput').addEventListener('change', handleFile, false);
+
+function handleFile(e) {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, {type: 'array'});
+        
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+        
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+        
+        processData(jsonData);
+    };
+    
+    reader.readAsArrayBuffer(file);
+}
+
+function processData(data) {
+    window.fullData = data;
+    const mode = document.getElementById('modeSelect').value;
+    
+    let resultHTML = '<h2>Select a row to see results:</h2>';
+    resultHTML += '<select id="rowSelector" onchange="showResult()">';
+    resultHTML += '<option value="">Choose a row</option>';
+    
+    for (let i = 1; i < data.length; i++) {
+        if (data[i][0] !== undefined && data[i][1] !== undefined) {
+            resultHTML += `<option value="${i}">${data[i][0]} - ${data[i][1]}</option>`;
+        }
+    }
+    
+    resultHTML += '</select>';
+    resultHTML += '<div id="analysisResult"></div>';
+    
+    document.getElementById('resultArea').innerHTML = resultHTML;
+}
+
+function showStep2Result(rowData) {
+    const windowsUserName = rowData[13]; // Column N
+    const market = rowData[2]; // Column C
+    
+    let marketResult;
+    switch(market) {
+        case 'DACH':
+            marketResult = '180, 130, 97';
+            break;
+        case 'Italy':
+            marketResult = '100';
+            break;
+        case 'Spain':
+            marketResult = '160, 29';
+            break;
+        case 'France':
+            marketResult = '110';
+            break;
+        default:
+            marketResult = 'No specific result';
+    }
+    
+    return `
+        <div class="result-section">
+            <h4>Name</h4>
+            <div class="result-content">${windowsUserName}.pcc@costa.it</div>
+            <button class="copy-btn" onclick="copyToClipboard('${windowsUserName}.pcc@costa.it', this)">Copy Name</button>
+        </div>
+        <div class="result-section">
+            <h4>Users</h4>
+            <div class="result-content">${windowsUserName}@es.costa.it</div>
+            <button class="copy-btn" onclick="copyToClipboard('${windowsUserName}@es.costa.it', this)">Copy Users</button>
+        </div>
+        <div class="result-section">
+            <h4>Market Result</h4>
+            <div class="result-content">${marketResult}</div>
+            <button class="copy-btn" onclick="copyToClipboard('${marketResult}', this)">Copy Market Result</button>
+        </div>
+    `;
+}
+
+function showResult() {
+    const selectedRow = document.getElementById('rowSelector').value;
+    if (!selectedRow) return;
+    
+    const rowData = window.fullData[selectedRow];
+    const mode = document.getElementById('modeSelect').value;
+    
+    let result = '';
+    
+    if (mode === 'step2') {
+        result = showStep2Result(rowData);
+    } else {
+        const market = rowData[2];
+        const isPCC = rowData[4] === 'Y';
+        const isDS = rowData[4] === 'DS';
+        const isTL = rowData[4] === 'TL';
+        
+        if (isDS) {
+            result = getDigitalSupportResult(market);
+        } else if (isPCC || isTL) {
+            result = getPCCResult(market);
+        } else {
+            result = getB2CResult(market);
+        }
+    }
+    
+    document.getElementById('analysisResult').innerHTML = result;
+}
+
+function changeMode() {
+    const fileInput = document.getElementById('fileInput');
+    if (fileInput.files.length > 0) {
+        handleFile({target: {files: [fileInput.files[0]]}});
+    }
+}
+
+function getDigitalSupportResult(market) {
+    let department, colas, skills;
+    
+    switch (market) {
+        case 'Spain':
+            department = "CCH  Com Ops E B2C";
+            colas = "E_CBDsManagement; E_CBDsSales; E_CBCostaClub; E_CBShorexB2C; E_Outbound; E_WAB2C; E_CBWOPT; E_CBWB2C;";
+            skills = "DsSales:5, DsManagement:4, CostaClub:5, WA_CostaClub, WA_BookingSales, WA_BookingManagement, Spanish, Barcelona";
+            break;
+        case 'DACH':
+            department = "CCH  Com Ops DACH B2C";
+            colas = "D_WAB2C, CH_D_WAB2C, A_WAB2C, A_CBDsManagement; A_CBDsSales; A_CBCostaClub; A_Outbound; D_CBDsManagement; D_CBDsSales; D_CBCostaClub; D_Outbound; CH_D_CBDsManagement; CH_D_CBDsSales; CH_D_CBCostaClub; CH_D_Outbound; A_CBWB2C; D_CBWB2C; CH_CBWB2C; A_CBWOPT; D_CBWOPT; CH_CBWOPT; E_CBDsManagement; E_CBDsSales; E_CBCostaClub; E_CBShorexB2C; E_Outbound; E_WAB2C; E_CBWOPT; E_CBWB2C;";
+            skills = "DsSales:5, DsManagement:4, CostaClub:5, WA_CostaClub, WA_BookingSales, WA_BookingManagement, German, Barcelona";
+            break;
+        case 'France':
+            department = "CCH  Com Ops F B2C";
+            colas = "F_CBDsManagement; F_CBDsSales; F_CBCostaClub; F_CBShorexB2C; F_Outbound; F_WAB2C; F_CBWOPT; F_CBWB2B; E_CBDsManagement; E_CBDsSales; E_CBCostaClub; E_CBShorexB2C; E_Outbound; E_WAB2C; E_CBWOPT; E_CBWB2B;";
+            skills = "DsSales:5, DsManagement:4, CostaClub:5, WA_CostaClub, WA_BookingSales, WA_BookingManagement, French, Barcelona";
+            break;
+        default:
+            return `<p>No specific results for market: ${market}</p>`;
+    }
+    
+    return generateResultHTML(department, colas, skills);
+}
+
+function getPCCResult(market) {
+    let department, colas, skills;
+    
+    switch (market) {
+        case 'DACH':
+            department = "CCH Com Ops  DACH PCC";
+            colas = "A_PCC; A_PCCDefault; A_CBWB2CPCC; A_CBWOPTPCC; A_CBFQPCC; A_CBFQPCCDefault; A_Outbound; D_PCC; D_PCCDefault; D_CBWB2CPCC; D_CBWOPTPCC; D_CBFQPCC; D_CBFQPCCDefault; D_Outbound; CH_D_PCC; CH_D_PCCDefault; CH_D_CBWB2CPCC; CH_D_CBWOPTPCC; CH_D_CBFQPCC; CH_D_CBFQPCCDefault; CH_D_Outbound";
+            skills = "DsSales:5, DsManagement:4, CostaClub:5, A_PCC:5, D_PCC:5, CH_D_PCC:5, German";
+            break;
+        case 'France':
+            department = "CCH  Com Ops  F PCC";
+            colas = "F_PCC; F_PCCDefault; F_CBWB2CPCC; F_CBWOPTPCC; F_CBFQPCC; F_CBFQPCCDefault; F_Outbound;";
+            skills = "DsSales:5, DsManagement:4, CostaClub:5, F_PCC, Barcelona, French";
+            break;
+        case 'Spain':
+            department = "CCH  Com Ops E PCC";
+            colas = "E_DsManagement; E_CBDsManagement; E_DsSales; E_CBDsSales; E_CostaClub; E_CBCostaClub; E_CBShorexB2C; E_PBOR; E_Crisis; E_Outbound, E_PCC, E_PCCDefault;";
+            skills = "DsSales:5, DsManagement:4, CostaClub:5, E_PCC:5, Spanish";
+            break;
+        case 'Italy':
+            department = "CCH CC ITA PCC";
+            colas = "I_PCC; I_PCC_Default; I_CBWB2CPCC; I_CBWOPTPCC; I_CBFQPCC; I_CBFQPCCDefault; I_Outbound;";
+            skills = "I_PCC, Barcelona, Italian";
+            break;
+        default:
+            return `<p>No specific results for market: ${market}</p>`;
+    }
+    
+    return generateResultHTML(department, colas, skills);
+}
+
+function getB2CResult(market) {
+    let department, colas, skills;
+    
+    switch (market) {
+        case 'DACH':
+            department = "CCH  Com Ops  DACH B2C";
+            colas = "A_DsManagement; A_CBDsManagement; A_DsSales; A_CBDsSales; A_CostaClub; A_CBCostaClub; A_MyCosta; A_PBOR; A_Crisis; A_Outbound; D_DsManagement; D_CBDsManagement; D_DsSales; D_CBDsSales; D_CostaClub; D_CBCostaClub; D_MyCosta; D_PBOR; D_Crisis; D_Outbound; CH_D_DsManagement; CH_D_CBDsManagement; CH_D_DsSales; CH_D_CBDsSales; CH_D_CostaClub; CH_D_CBCostaClub; CH_D_MyCosta; CH_D_PBOR; D_Crisis; CH_D_Outbound";
+            skills = "DsSales:5, DsManagement:4, CostaClub:5, German";
+            break;
+        case 'France':
+            department = "CCH  Com Ops  F B2C";
+            colas = "F_DsManagement; F_CBDsManagement; F_DsSales; F_CBDsSales; F_CostaClub; F_CBCostaClub; F_CBShorexB2C; F_PBOR; F_Crisis; F_Outbound; F_DsGRP;";
+            skills = "DsSales:5, DsManagement:4, CostaClub:5, French";
+            break;
+        case 'Spain':
+            department = "CCH  Com Ops  E B2C";
+            colas = "E_DsManagement; E_CBDsManagement; E_DsSales; E_CBDsSales; E_CostaClub; E_CBCostaClub; E_CBShorexB2C; E_PBOR; E_Crisis; E_Outbound;";
+            skills = "DsSales:5, DsManagement:4, CostaClub:5, Spanish";
+            break;
+        default:
+            return `<p>No specific results for market: ${market}</p>`;
+    }
+    
+    return generateResultHTML(department, colas, skills);
+}
+
+function generateResultHTML(department, colas, skills) {
+    return `
+        <div class="result-section">
+            <h4>Division</h4>
+            <div class="result-content">UECC</div>
+            <button class="copy-btn" onclick="copyToClipboard('UECC', this)">Copy Division</button>
+        </div>
+        <div class="result-section">
+            <h4>Department</h4>
+            <div class="result-content">${department}</div>
+            <button class="copy-btn" onclick="copyToClipboard('${department}', this)">Copy Department</button>
+        </div>
+        <div class="result-section">
+            <h4>Colas</h4>
+            <div class="result-content">${colas}</div>
+            <button class="copy-btn" onclick="copyToClipboard('${colas}', this)">Copy Colas</button>
+        </div>
+        <div class="result-section">
+            <h4>Skills</h4>
+            <div class="result-content">${skills}</div>
+            <button class="copy-btn" onclick="copyToClipboard('${skills}', this)">Copy Skills</button>
+        </div>
+    `;
+}
+
+function copyToClipboard(text, button) {
+    navigator.clipboard.writeText(text).then(() => {
+        button.style.backgroundColor = '#00ff00';
+        setTimeout(() => {
+            button.style.backgroundColor = '';
+        }, 1000);
+    }).catch(err => {
+        console.error('Error in copying text: ', err);
+    });
+}
+</script>
+</body></html>

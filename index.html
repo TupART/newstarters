@@ -223,8 +223,25 @@ function showStep2Result() {
     const isPCC = rowData[4] === 'Y';
     const isDS = rowData[4] === 'DS';
     
-    const name = `${windowsUserName}.pcc@costa.it`;
-    const users = `${windowsUserName}@es.costa.it`;
+    let result = '';
+    
+    if (isPCC) {
+        const name = `${windowsUserName}.pcc@costa.it`;
+        const users = `${windowsUserName}@es.costa.it`;
+        
+        result += `
+            <div class="result-section">
+                <h4>Name</h4>
+                <div class="result-content">${name}</div>
+                <button class="copy-btn" onclick="copyToClipboard('${name}', this)">Copy Name</button>
+            </div>
+            <div class="result-section">
+                <h4>Users</h4>
+                <div class="result-content">${users}</div>
+                <button class="copy-btn" onclick="copyToClipboard('${users}', this)">Copy Users</button>
+            </div>
+        `;
+    }
     
     let groups;
     if (isDS) {
@@ -245,17 +262,7 @@ function showStep2Result() {
         }
     }
     
-    let result = `
-        <div class="result-section">
-            <h4>Name</h4>
-            <div class="result-content">${name}</div>
-            <button class="copy-btn" onclick="copyToClipboard('${name}', this)">Copy Name</button>
-        </div>
-        <div class="result-section">
-            <h4>Users</h4>
-            <div class="result-content">${users}</div>
-            <button class="copy-btn" onclick="copyToClipboard('${users}', this)">Copy Users</button>
-        </div>
+    result += `
         <div class="result-section">
             <h4>Groups</h4>
             <div class="result-content">${groups}</div>

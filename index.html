@@ -1,8 +1,8 @@
 <html><head><base href="https://newstarters.vercel.app/">
 <html lang='es-ES'>
-<link rel="shortcut icon" type="image/x-icon" href="https://www.costacruceros.es/favicon.ico"/>
-<link rel="icon" type="image/png" sizes="32x32" href="https://www.costacruceros.es/favicon-32x32.png"/>
-<link rel="icon" type="image/png" sizes="16x16" href="https://www.costacruceros.es/favicon-16x16.png"/>
+<link rel="shortcut icon" type="image/x-icon" href="/resources/img/favicon.ico"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/resources/img/favicon-32x32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/resources/img/favicon-16x16.png"/>
 <title>🆕​ CCH IT Spain Department Tool 🆕​</title><style>
     body {
         font-family: 'Roboto', sans-serif;
@@ -135,7 +135,7 @@
 </head>
 <body>
 <div class="container">
-    <center><img src="https://i.imgur.com/yjdutYT.png" alt="CCH IT Department" width="200" height="200"></center>
+    <center><img src="/resources/img/logoCCH.png" alt="CCH IT Department" width="200" height="200"></center>
     <h1>🛳️​CCH IT Spain Department Tool🛳️​​</h1>
     <h3>Advanced New Starters File Analyzer</h3>
     <div class="mode-selector">
@@ -197,45 +197,57 @@ function processData(data) {
     document.getElementById('resultArea').innerHTML = resultHTML;
 }
 
-function showStep2Result(rowData) {
+function showStep2Result() {
+    const selectedRow = document.getElementById('rowSelector').value;
+    if (!selectedRow) return;
+    
+    const rowData = window.fullData[selectedRow];
     const windowsUserName = rowData[13]; // Column N
     const market = rowData[2]; // Column C
+    const isPCC = rowData[4] === 'Y';
+    const isDS = rowData[4] === 'DS';
     
-    let marketResult;
-    switch(market) {
-        case 'DACH':
-            marketResult = '180, 130, 97';
-            break;
-        case 'Italy':
-            marketResult = '100';
-            break;
-        case 'Spain':
-            marketResult = '160, 29';
-            break;
-        case 'France':
-            marketResult = '110';
-            break;
-        default:
-            marketResult = 'No specific result';
+    const name = `${windowsUserName}.pcc@costa.it`;
+    const users = `${windowsUserName}@es.costa.it`;
+    
+    let groups;
+    if (isDS) {
+        switch (market) {
+            case 'DACH': groups = '180, 130, 97, 160, 29'; break;
+            case 'Italy': groups = '100, 160, 29'; break;
+            case 'Spain': groups = '160, 29'; break;
+            case 'France': groups = '110, 160, 29'; break;
+            default: groups = 'No specific groups for this market';
+        }
+    } else {
+        switch (market) {
+            case 'DACH': groups = '180, 130, 97'; break;
+            case 'Italy': groups = '100'; break;
+            case 'Spain': groups = '160, 29'; break;
+            case 'France': groups = '110'; break;
+            default: groups = 'No specific groups for this market';
+        }
     }
     
-    return `
+    let result = `
         <div class="result-section">
             <h4>Name</h4>
-            <div class="result-content">${windowsUserName}.pcc@costa.it</div>
-            <button class="copy-btn" onclick="copyToClipboard('${windowsUserName}.pcc@costa.it', this)">Copy Name</button>
+            <div class="result-content">${name}</div>
+            <button class="copy-btn" onclick="copyToClipboard('${name}', this)">Copy Name</button>
         </div>
         <div class="result-section">
             <h4>Users</h4>
-            <div class="result-content">${windowsUserName}@es.costa.it</div>
-            <button class="copy-btn" onclick="copyToClipboard('${windowsUserName}@es.costa.it', this)">Copy Users</button>
+            <div class="result-content">${users}</div>
+            <button class="copy-btn" onclick="copyToClipboard('${users}', this)">Copy Users</button>
         </div>
         <div class="result-section">
-            <h4>Market Result</h4>
-            <div class="result-content">${marketResult}</div>
-            <button class="copy-btn" onclick="copyToClipboard('${marketResult}', this)">Copy Market Result</button>
+            <h4>Groups</h4>
+            <div class="result-content">${groups}</div>
+            <button class="copy-btn" onclick="copyToClipboard('${groups}', this)">Copy Groups</button>
         </div>
     `;
+    
+    document.getElementById('analysisResult').innerHTML = result;
 }
 
 function showResult() {

@@ -357,18 +357,18 @@ function getPCCResult(market) {
     switch (market) {
         case 'DACH':
             department = "CCH Com Ops  DACH PCC";
-            colas = "A_PCC; A_PCCDefault; A_CBWB2CPCC; A_CBWOPTPCC; A_CBFQPCC; A_CBFQPCCDefault; A_Outbound; D_PCC; D_PCCDefault; D_CBWB2CPCC; D_CBWOPTPCC; D_CBFQPCC; D_CBFQPCCDefault; D_Outbound; CH_D_PCC; CH_D_PCCDefault; CH_D_CBWB2CPCC; CH_D_CBWOPTPCC; CH_D_CBFQPCC; CH_D_CBFQPCCDefault; CH_D_Outbound";
-            skills = "DsSales:5, DsManagement:4, CostaClub:5, A_PCC:5, D_PCC:5, CH_D_PCC:5, German";
+            colas = "A_PCC; A_PCCDefault; A_CBWB2CPCC; A_CBWOPTPCC; A_CBFQPCC; A_CBFQPCCDefault; A_Outbound; D_PCC; D_PCCDefault; D_CBWB2CPCC; D_CBWOPTPCC; D_CBFQPCC; D_CBFQPCCDefault; D_Outbound; CH_D_PCC; CH_D_PCCDefault; CH_D_CBWB2CPCC; CH_D_CBWOPTPCC; CH_D_CBFQPCC; CH_D_CBFQPCCDefault; CH_D_Outbound; A_DsManagement; A_CBDsManagement; A_DsSales; A_CBDsSales; D_DsManagement; D_CBDsManagement; D_DsSales; D_CBDsSales; CH_D_DsManagement; CH_D_CBDsManagement; CH_D_DsSales; CH_D_CBDsSales;";
+            skills = "A_PCC:5, D_PCC:5, CH_D_PCC:5, DsSales:1, DsManagement:1, German";
             break;
         case 'France':
             department = "CCH  Com Ops  F PCC";
-            colas = "F_PCC; F_PCCDefault; F_CBWB2CPCC; F_CBWOPTPCC; F_CBFQPCC; F_CBFQPCCDefault; F_Outbound;";
-            skills = "DsSales:5, DsManagement:4, CostaClub:5, F_PCC, Barcelona, French";
+            colas = "F_PCC; F_PCCDefault; F_CBWB2CPCC; F_CBWOPTPCC; F_CBFQPCC; F_CBFQPCCDefault; F_Outbound; F_DsManagement; F_CBDsManagement; F_DsSales; F_CBDsSales;";
+            skills = "F_PCC, DsSales:1, DsManagement:1, Barcelona, French";
             break;
         case 'Spain':
             department = "CCH  Com Ops E PCC";
-            colas = "E_DsManagement; E_CBDsManagement; E_DsSales; E_CBDsSales; E_CostaClub; E_CBCostaClub; E_CBShorexB2C; E_PBOR; E_Crisis; E_Outbound, E_PCC, E_PCCDefault;";
-            skills = "DsSales:5, DsManagement:4, CostaClub:5, E_PCC:5, Spanish";
+            colas = "E_PCC; E_PCCDefault; E_Outbound; E_DsManagement; E_CBDsManagement; E_DsSales; E_CBDsSales;";
+            skills = "E_PCC:5, DsSales:1, DsManagement:1, Spanish";
             break;
         case 'Italy':
             department = "CCH CC ITA PCC";
@@ -445,6 +445,6 @@ function copyToClipboard(text, button) {
 }
 </script>
 <footer class="footer">
-    Developed by Jeremy López
+    Ⓒ Developed by Jeremy López - ∞ <script>document.write( new Date().getUTCFullYear() );</script>
 </footer>
 </body></html>

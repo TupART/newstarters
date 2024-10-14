@@ -1,9 +1,10 @@
 <html><head><base href="https://newstarters.vercel.app/">
-<html lang='es-ES'>
-<link rel="shortcut icon" type="image/x-icon" href="/resources/img/favicon.ico"/>
-<link rel="icon" type="image/png" sizes="32x32" href="/resources/img/favicon-32x32.png"/>
-<link rel="icon" type="image/png" sizes="16x16" href="/resources/img/favicon-16x16.png"/>
-<title>🆕​ CCH IT Spain Department Tool 🆕​</title><style>
+    <html lang='es-ES'>
+    <link rel="shortcut icon" type="image/x-icon" href="/resources/img/favicon.ico"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="/resources/img/favicon-32x32.png"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="/resources/img/favicon-16x16.png"/>
+    <title>🆕​ CCH IT Spain Department Tool 🆕​</title>
+    <style>
     body {
         font-family: 'Roboto', sans-serif;
         background-color: #0a0a1a;
@@ -139,8 +140,8 @@
     <h1>🛳️​CCH IT Spain Department Tool🛳️​​</h1>
     <h3>Advanced New Starters File Analyzer</h3>
     <div class="mode-selector">
-        <label for="modeSelect">✅​ Select Step:</label>
-        <select id="modeSelect" onchange="changeMode()">
+        <label for="modeSelector">✅​ Select Step:</label>
+        <select id="modeSelector" onchange="changeMode()">
             <option value="step2">Step 2 - TTG/B2E</option>
             <option value="step3">Step 3 - Genesys</option>
         </select>
@@ -156,7 +157,16 @@
 </div>
 
 <script>
+let currentMode = 'step2';
+
 document.getElementById('fileInput').addEventListener('change', handleFile, false);
+
+function changeMode() {
+    currentMode = document.getElementById('modeSelector').value;
+    if (window.fullData) {
+        processData(window.fullData);
+    }
+}
 
 function handleFile(e) {
     const file = e.target.files[0];
@@ -179,10 +189,16 @@ function handleFile(e) {
 
 function processData(data) {
     window.fullData = data;
-    const mode = document.getElementById('modeSelect').value;
-    
+    if (currentMode === 'step2') {
+        processStep2Data(data);
+    } else {
+        processStep3Data(data);
+    }
+}
+
+function processStep2Data(data) {
     let resultHTML = '<h2>Select a row to see results:</h2>';
-    resultHTML += '<select id="rowSelector" onchange="showResult()">';
+    resultHTML += '<select id="rowSelector" onchange="showStep2Result()">';
     resultHTML += '<option value="">Choose a row</option>';
     
     for (let i = 1; i < data.length; i++) {
@@ -250,40 +266,44 @@ function showStep2Result() {
     document.getElementById('analysisResult').innerHTML = result;
 }
 
+function processStep3Data(data) {
+    let resultHTML = '<h2>Select a row to see results:</h2>';
+    resultHTML += '<select id="rowSelector" onchange="showResult()">';
+    resultHTML += '<option value="">Choose a row</option>';
+    
+    for (let i = 1; i < data.length; i++) {
+        if (data[i][0] !== undefined && data[i][1] !== undefined) {
+            resultHTML += `<option value="${i}">${data[i][0]} - ${data[i][1]}</option>`;
+        }
+    }
+    
+    resultHTML += '</select>';
+    resultHTML += '<div id="analysisResult"></div>';
+    
+    document.getElementById('resultArea').innerHTML = resultHTML;
+}
+
 function showResult() {
     const selectedRow = document.getElementById('rowSelector').value;
     if (!selectedRow) return;
     
     const rowData = window.fullData[selectedRow];
-    const mode = document.getElementById('modeSelect').value;
+    const market = rowData[2];
+    const isPCC = rowData[4] === 'Y';
+    const isDS = rowData[4] === 'DS';
+    const isTL = rowData[4] === 'TL';
     
     let result = '';
     
-    if (mode === 'step2') {
-        result = showStep2Result(rowData);
+    if (isDS) {
+        result = getDigitalSupportResult(market);
+    } else if (isPCC || isTL) {
+        result = getPCCResult(market);
     } else {
-        const market = rowData[2];
-        const isPCC = rowData[4] === 'Y';
-        const isDS = rowData[4] === 'DS';
-        const isTL = rowData[4] === 'TL';
-        
-        if (isDS) {
-            result = getDigitalSupportResult(market);
-        } else if (isPCC || isTL) {
-            result = getPCCResult(market);
-        } else {
-            result = getB2CResult(market);
-        }
+        result = getB2CResult(market);
     }
     
     document.getElementById('analysisResult').innerHTML = result;
-}
-
-function changeMode() {
-    const fileInput = document.getElementById('fileInput');
-    if (fileInput.files.length > 0) {
-        handleFile({target: {files: [fileInput.files[0]]}});
-    }
 }
 
 function getDigitalSupportResult(market) {

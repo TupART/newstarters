@@ -29,7 +29,7 @@ app.get('/step5', (req, res) => {
     res.sendFile(path.join(__dirname, 'step5', 'index.html'));
 });
 
-app.use('/resources', express.static(path.join(__dirname, 'step2y3', 'resources')));
+app.use('/resources', express.static(path.join(__dirname, 'resources')));
 
 app.post('/upload', async (req, res) => {
     try {

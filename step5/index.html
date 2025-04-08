@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🆕​ Starters Tool CCH</title>
+    <style>
+        body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #0a0a1a;
+        color: #e0e0ff;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+    }
+    .container {
+        background: rgba(20, 20, 40, 0.8);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
+        max-width: 900px;
+        width: 100%;
+    }
+    h1, h2 {
+        text-align: center;
+        color: #0071a3;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    h3 {
+        text-align: center;
+        color: #f9b112;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 2rem; }
+    h3 { font-size: 1.5rem; }
+.container {
+        animation: pulse 3s infinite;
+    }
+.neon-line {
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #0071a3, transparent);
+        margin: 2rem 0;
+    }
+    
+.upload-area {
+        border: 2px dashed #f9b112;
+        border-radius: 10px;
+        padding: 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        transition: all 0.3s ease;
+    }
+    .upload-area:hover {
+        background: rgba(249, 177, 18, 0.1);
+    }
+
+        .upload-form {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 2px dashed #f9b112;
+            transition: all 0.3s ease;
+        }
+
+        .upload-form:hover {
+            background: rgba(249, 177, 18, 0.1);
+        }
+
+        .file-input {
+            margin-bottom: 10px;
+            color: #e0e0ff;
+        }
+
+        .btn {
+            background: #0071a3;
+            color: #e0e0ff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #00cccc;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 113, 163, 0.3);
+            color: #e0e0ff;
+        }
+
+        th {
+            background-color: rgba(0, 113, 163, 0.2);
+            font-weight: bold;
+            color: #0071a3;
+        }
+
+        tr:hover {
+            background-color: rgba(0, 113, 163, 0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.8); }
+            100% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
+        }
+        .result-section {
+        margin-bottom: 1.5rem;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 1rem;
+        border-radius: 5px;
+    }
+    .result-section h4 {
+        color: #ff00ff;
+        margin-top: 0;
+    }
+    .result-content {
+        margin-bottom: 0.5rem;
+        word-wrap: break-word;
+    }
+    .copy-btn {
+        margin-top: 0.5rem;
+        transition: background-color 0.3s ease;
+    }
+    .mode-selector {
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    .mode-selector select {
+        background-color: #1a1a3a;
+        color: #0071a3;
+        border: 1px solid #0071a3;
+        padding: 0.5rem;
+        border-radius: 5px;
+    }
+    .footer {
+        text-align: center;
+        padding: 20px;
+        background-color: rgba(20, 20, 40, 0.8);
+        color: #00ffff;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        font-size: 0.9rem;
+        box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.2);
+    }
+    label, button {
+        cursor: pointer;
+        background: #0071a3;
+        color: #0a0a1a;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        border: none;
+        font-size: 1rem;
+    }
+    label:hover, button:hover {
+        background: #00cccc;
+    }
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: #0071a3 rgba(20, 20, 40, 0.8);
+    }
+
+    *::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: rgba(20, 20, 40, 0.8);
+        border-radius: 10px;
+    }
+
+    *::-webkit-scrollbar {
+        width: 10px;
+        background-color: rgba(20, 20, 40, 0.8);
+    }
+
+    *::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-image: -webkit-gradient(
+            linear,
+            left bottom,
+            left top,
+            color-stop(0.44, #0071a3),
+            color-stop(0.72, #0099cc),
+            color-stop(0.86, #00cccc)
+        );
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <center><img src="/resources/img/logoCCH.png" alt="CCH IT Department" width="200" height="200"></center>
+        <h1>🛳️​CCH IT Spain Department Tool🛳️​​</h1>
+        <h3>Advanced New Starters File Analyzer</h3>
+        <div class="mode-selector">
+            <label for="modeSelector">✅​ Select Step:</label>
+            <select id="modeSelector" onchange="changeMode()">
+                <option value="step2">Step 2 - TTG/B2E</option>
+                <option value="step3">Step 3 - Genesys</option>
+                <option value="step4">Step 4 - D365</option>
+                <option value="step5" selected>Step 5 - PCC Mailbox</option>
+            </select>
+        </div>
+        <div class="upload-area">
+            
+                <input type="file" id="fileInput" accept=".xlsx" class="file-input">
+                <button onclick="uploadFile()" class="btn">Upload File</button>
+            
+        </div>
+        <div class="neon-line"></div>
+        <div id="resultArea">
+            ⬇️​​ Results will appear here... ⬇️​
+            <br></br>
+
+            <form id="dataForm" class="hidden">
+                <table id="dataTable">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
+                            <th>Name</th>
+                            <th>Surname</th>
+                            <th>Email</th>
+                            <th>Market</th>
+                            <th>Va a ser PCC?</th>
+                            <th>B2E User Name</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+                <button type="button" onclick="processSelected()" class="btn" style="margin-top: 20px;">Generate Template</button>
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+        function changeMode() {
+            const mode = document.getElementById('modeSelector').value;
+            if (mode === 'step2' || mode === 'step3') {
+                window.location.href = '/';
+                return;
+            }
+            if (mode === 'step4') {
+                window.location.href = '/step4';
+                return;
+            }
+        }
+
+        let currentData = [];
+
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Visual feedback
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.style.backgroundColor = '#45a049';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.backgroundColor = '#4CAF50';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+
+        function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                currentData = data;
+                displayData(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error uploading file');
+            });
+        }
+
+        function displayData(data) {
+            const tableBody = document.getElementById('tableBody');
+            const dataForm = document.getElementById('dataForm');
+            
+            if (!data || !Array.isArray(data)) {
+                console.error('Invalid data received');
+                return;
+            }
+
+            tableBody.innerHTML = '';
+            data.forEach((row, index) => {
+                if (!row) return;
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><input type="checkbox" name="rows" value="${index}"></td>
+                    <td>${(row.Name || '').toString()}</td>
+                    <td>${(row.Surname || '').toString()}</td>
+                    <td>${(row['E-mail'] || '').toString()}</td>
+                    <td>${(row.Market || '').toString()}</td>
+                    <td>${(row['Va a ser PCC?'] || '').toString()}</td>
+                    <td>${(row['B2E User Name'] || '').toString()}</td>
+                `;
+                tableBody.appendChild(tr);
+            });
+
+            dataForm.classList.remove('hidden');
+        }
+
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('selectAll');
+            const checkboxes = document.getElementsByName('rows');
+            checkboxes.forEach(checkbox => checkbox.checked = selectAll.checked);
+        }
+
+        function processSelected() {
+            const selectedRows = Array.from(document.getElementsByName('rows'))
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+
+            if (selectedRows.length === 0) {
+                alert('Please select at least one row');
+                return;
+            }
+
+            fetch('/process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ rows: selectedRows, step: 'step5' })
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.blob();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `SyncPCC_STEP5_CCH_${new Date().toISOString().replace(/[:.]/g, '')}.xlsx`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error processing selection');
+            });
+
+            // Show email template modal with selected emails
+            const selectedEmails = selectedRows.map(index => currentData[index]['E-mail']).join('\n');
+            document.getElementById('emailContent').textContent = `Hello Team,\n\nPlease Syncronize the attached new .PCC mailboxes in to the following PCC Agents profiles:\n\n${selectedRows.map(index => `${currentData[index].Name} ${currentData[index].Surname}`).join('\n')}\n\nThanks in advance.\nBest Regards`;
+            document.getElementById('emailModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('emailModal').style.display = 'none';
+        }
+    </script>
+
+    <!-- Add modal for email template -->
+    <div id="emailModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>SN Ticket Template</h2>
+            <div class="email-section">
+                <div class="copy-section">
+                    <h3>Subject:</h3>
+                    <div class="copy-content">
+                        <span>Sync .PCC mailboxes</span>
+                        <button onclick="copyText('D365 Profile Configuration')" class="copy-btn">Copy</button>
+                    </div>
+                </div>
+                <div class="copy-section">
+                    <h3>Description:</h3>
+                    <div class="copy-content">
+                        <pre id="emailContent"></pre>
+                        <button onclick="copyText(document.getElementById('emailContent').textContent)" class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            background: rgba(20, 20, 40, 0.95);
+            margin: 5% auto;
+            padding: 2rem;
+            border: 1px solid #0071a3;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 20px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
+            color: #e0e0ff;
+        }
+
+        .close {
+            position: sticky;
+            top: 0;
+            color: #0071a3;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            background: transparent;
+            padding: 0 5px;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #00cccc;
+        }
+
+        .email-section {
+            margin-top: 20px;
+        }
+
+        .copy-section {
+            margin-bottom: 20px;
+        }
+
+        .copy-section h3 {
+            margin-bottom: 10px;
+            color: #f9b112;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .copy-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 10px;
+            overflow-x: auto;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid rgba(0, 113, 163, 0.3);
+        }
+
+        .copy-content pre,
+        .copy-content span {
+            margin: 0;
+            white-space: pre-wrap;
+            flex-grow: 1;
+            font-family: 'Roboto', sans-serif;
+            color: #e0e0ff;
+            display: flex;
+            align-items: center;
+        }
+
+        .copy-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            align-self: center;
+            min-width: 80px;
+            transition: background-color 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background-color: #45a049;
+        }
+       
+    </style>
+    <footer class="footer">
+        Developed by Jeremy López Ⓒ 2024 -<script>document.write( new Date().getUTCFullYear() );</script>
+    </footer>
+</body>
+</html>
